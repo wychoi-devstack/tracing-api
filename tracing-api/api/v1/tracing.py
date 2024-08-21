@@ -11,7 +11,9 @@ from config import CONF
 from common.jaeger import (
         get_error_traces,
         get_floating_ip_error_traces,
+        get_solved_floating_ip_trace,
         get_quota_error_traces,
+        get_solved_quota_trace,
 )
 
 from typing import List
@@ -85,8 +87,39 @@ async def get_floating_ip_errors(
         return res
 
 @router.get(
+    "/traces/solved/floating-ip",
+    description="Get Solved Floatin IP Error Traces",
+    responses={
+        200: {"model": List[str]},
+        500: {"model": schemas.InternalServerErrorMessage},
+    },
+    response_model=List[str],
+    status_code=status.HTTP_200_OK,
+    response_description="OK"
+)
+async def get_solved_floating_ip_error(
+    request: Request,
+    response: Response,
+) -> List[str]:
+    try:
+        res = await get_solved_floating_ip_trace("test02")
+
+    except Exception as e:
+        code = status.HTTP_500_INTERNAL_SERVER_ERROR
+
+        if '500' in str(e):
+            e = "failed to get traces with floating ip error tag"
+
+        return HTTPException(
+            status_code=code,
+            detail=str(e)
+        )
+    else:
+        return res
+
+@router.get(
     "/traces/errors/quota",
-    description="Get Quota IP Error Traces",
+    description="Get Quota Error Traces",
     responses={
         200: {"model": List[str]},
         500: {"model": schemas.InternalServerErrorMessage},
@@ -101,6 +134,37 @@ async def get_quota_errors(
 ) -> List[str]:
     try:
         res = await get_quota_error_traces()
+
+    except Exception as e:
+        code = status.HTTP_500_INTERNAL_SERVER_ERROR
+
+        if '500' in str(e):
+            e = "failed to get traces with floating ip error tag"
+
+        return HTTPException(
+            status_code=code,
+            detail=str(e)
+        )
+    else:
+        return res
+
+@router.get(
+    "/traces/solved/quota",
+    description="Get Solved Quota Error Traces",
+    responses={
+        200: {"model": List[str]},
+        500: {"model": schemas.InternalServerErrorMessage},
+    },
+    response_model=List[str],
+    status_code=status.HTTP_200_OK,
+    response_description="OK"
+)
+async def get_solved_quota_error(
+    request: Request,
+    response: Response,
+) -> List[str]:
+    try:
+        res = await get_solved_quota_trace()
 
     except Exception as e:
         code = status.HTTP_500_INTERNAL_SERVER_ERROR
