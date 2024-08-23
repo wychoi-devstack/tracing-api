@@ -4,7 +4,7 @@ import sys
 GROUP_NAME = __name__.split('.')[-1]
 
 ALL_OPTS = [
-        cfg.StrOpt('', default=''),
+        cfg.StrOpt('url', default='localhost'),
 ]
 
 def register_opts(conf):

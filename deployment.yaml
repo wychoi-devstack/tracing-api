@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tracing-api
+  labels:
+    app: tracing-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tracing-api
+  template:
+    metadata:
+      labels:
+        app: tracing-api
+    spec:
+      containers:
+      - name: tracing-api
+        image: choiwyoung/tracing-api:1.2.0
+        ports:
+        - containerPort: 80
+

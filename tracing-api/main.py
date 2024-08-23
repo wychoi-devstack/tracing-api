@@ -9,14 +9,14 @@ PROJECT_NAME = "tracing-api"
 
 async def on_startup() -> None:
     configure(config_file_path='/etc/tracing-api/tracing-api.conf')
-
+    
     if CONF.cors.allow_origins:
         app.add_middleware(
-                CORSMiddleware,
-                allow_origins=[str(origin) for origin in CONF.cors.allow_origins],
-                allow_credentials=True,
-                allow_methods=["*"],
-                allow_headers=["*"],
+            CORSMiddleware,
+            allow_origins=[str(origin) for origin in CONF.cors.allow_origins],
+            allow_credentials=True,
+            allow_methods=["*"],
+            allow_headers=["*"],
         )
 
 async def on_shutdown() -> None:
