@@ -208,8 +208,6 @@ async def get_volume_detachment_error_traces() -> List[dict]:
                     if "Cannot detach a root device volume" in res.json()["data"][t]["spans"][s]["logs"][0]["fields"][2]["value"]:
                         errors.append(res.json()["data"][t]["spans"][s]["traceID"])
 
-        print(start, microsec)
-        print(end)
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
